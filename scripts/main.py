@@ -236,7 +236,7 @@ class Script(scripts.Script):
         self.language.visible=False
         return [self.language]
 
-    def before_process_batch(self, p, language, **kwargs):
+    def process(self, p, language, **kwargs):
         print(f"{self.enable_translation.value}")
         if hasattr(self, "translator") and self.is_active:
             print(f"Translating to English from {language_options[language].label}")
