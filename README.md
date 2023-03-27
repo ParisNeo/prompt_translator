@@ -9,6 +9,10 @@ After installing prompt_translator, a new entry will be added to the Gradio UI. 
 
 The user can then write their prompt in the desired language and press the "Generate" button to generate the image. The prompt will automatically be translated to English, and the resulting image will look as described in the text.
 
+![image](https://user-images.githubusercontent.com/827993/228090321-2554472d-6fd0-4449-a6d4-190a62ddcce9.png)
+![image](https://user-images.githubusercontent.com/827993/228090380-9f2f8928-4698-403e-8ed5-94043ed25480.png)
+
+
 ## License
 This project is licensed under the MIT license.
 
