@@ -198,8 +198,6 @@ class Script(scripts.Script):
         return "Translate prompt to english"
 
     def show(self, is_img2img):
-        # if is_img2img:
-            # return False
         return scripts.AlwaysVisible
     
     def set_active(self, active):
@@ -236,18 +234,45 @@ class Script(scripts.Script):
         self.language.visible=False
         return [self.language]
 
-    def process(self, p, language, **kwargs):
-        print(kwargs)
-        if hasattr(self, "translator") and self.is_active:
-            print(f"Translating prompt to English from {language_options[language].label}")
-            print(f"Initial prompt:{p.prompt}")
-            ln_code = language_options[language].language_code
-            p.prompt = self.translator.translate(p.prompt, ln_code, "en_XX")
-            print(f"Translated prompt:{p.prompt}")
-            if p.negative_prompt!='':
-                print(f"Translating negative prompt to English from {language_options[language].label}")
-                print(f"Initial negative prompt:{p.negative_prompt}")
-                ln_code = language_options[language].language_code
-                p.negative_prompt = self.translator.translate(p.negative_prompt, ln_code, "en_XX")
-                print(f"Translated negative prompt:{p.negative_prompt}")
+    def get_prompts(self, p):
+        original_prompts = p.all_prompts if len(p.all_prompts) > 0 else [p.prompt]
+        original_negative_prompts = (
+            p.all_negative_prompts
+            if len(p.all_negative_prompts) > 0
+            else [p.negative_prompt]
+        )
 
+        return original_prompts, original_negative_prompts
+    
+    def process(self, p, language, **kwargs):
+        if hasattr(self, "translator") and self.is_active:
+            original_prompts, original_negative_prompts = self.get_prompts(p)
+            translated_prompts=[]
+            for original_prompt in original_prompts:
+                print(f"Translating prompt to English from {language_options[language].label}")
+                print(f"Initial prompt:{original_prompt}")
+                ln_code = language_options[language].language_code
+                translated_prompt = self.translator.translate(original_prompt, ln_code, "en_XX")
+                print(f"Translated prompt:{translated_prompt}")
+                translated_prompts.append(translated_prompt)
+
+            if p.negative_prompt!='':
+
+                translated_negative_prompts=[]
+                for negative_prompt in original_negative_prompts:
+                    print(f"Translating negative prompt to English from {language_options[language].label}")
+                    print(f"Initial negative prompt:{negative_prompt}")
+                    ln_code = language_options[language].language_code
+                    translated_negative_prompt = self.translator.translate(negative_prompt, ln_code, "en_XX")
+                    print(f"Translated negative prompt:{translated_negative_prompt}")
+                    translated_negative_prompts.append(translated_negative_prompt)
+
+                p.negative_prompt = translated_negative_prompts[0]
+                p.all_negative_prompts = translated_negative_prompts
+            p.prompt = translated_prompts[0]
+            p.prompt_for_display = translated_prompts[0]
+            p.all_prompts=translated_prompts
+
+    def postprocess(self, p, processed, *args):
+        print(f"Post process: Translated prompt : {p.prompt}")
+        
