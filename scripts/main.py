@@ -237,11 +237,17 @@ class Script(scripts.Script):
         return [self.language]
 
     def process(self, p, language, **kwargs):
-        print(f"{self.enable_translation.value}")
+        print(kwargs)
         if hasattr(self, "translator") and self.is_active:
-            print(f"Translating to English from {language_options[language].label}")
+            print(f"Translating prompt to English from {language_options[language].label}")
             print(f"Initial prompt:{p.prompt}")
             ln_code = language_options[language].language_code
             p.prompt = self.translator.translate(p.prompt, ln_code, "en_XX")
             print(f"Translated prompt:{p.prompt}")
+            if p.negative_prompt!='':
+                print(f"Translating negative prompt to English from {language_options[language].label}")
+                print(f"Initial negative prompt:{p.negative_prompt}")
+                ln_code = language_options[language].language_code
+                p.negative_prompt = self.translator.translate(p.negative_prompt, ln_code, "en_XX")
+                print(f"Translated negative prompt:{p.negative_prompt}")
 
