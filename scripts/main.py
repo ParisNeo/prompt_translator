@@ -13,7 +13,7 @@ from transformers import MBart50TokenizerFast, MBartForConditionalGeneration
 class MBartTranslator:
     """MBartTranslator class provides a simple interface for translating text using the MBart language model.
 
-    The class can translate between 50 languages and is based on the "facebook/mbart-large-50-many-to-one-mmt"
+    The class can translate between 50 languages and is based on the "facebook/mbart-large-50-many-to-many-mmt"
     pre-trained MBart model. However, it is possible to use a different MBart model by specifying its name.
 
     Attributes:
@@ -21,7 +21,7 @@ class MBartTranslator:
         tokenizer (MBart50TokenizerFast): The MBart tokenizer.
     """
 
-    def __init__(self, model_name="facebook/mbart-large-50-many-to-one-mmt", src_lang=None, tgt_lang=None):
+    def __init__(self, model_name="facebook/mbart-large-50-many-to-many-mmt", src_lang=None, tgt_lang=None):
 
         self.supported_languages = [
             "ar_AR",
