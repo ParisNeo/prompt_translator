@@ -185,7 +185,8 @@ language_options = [
     AxisOption("සිංහල", "si_LK"),
     AxisOption("Slovenčina", "sk_SK"),
     AxisOption("Slovenščina", "sl_SI"),
-    AxisOption("Shqip", "sq_AL"),    
+    AxisOption("Shqip", "sq_AL"),   
+    AxisOption("Turkish", "tr_TR")
 ]
 
 
