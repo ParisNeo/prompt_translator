@@ -96,7 +96,7 @@ class MBartTranslator:
             "zh_TW",
         ]
         print("Building translator")
-        print("Loading generator (this may take few minutes the first time as I need to sownload the model)")
+        print("Loading generator (this may take few minutes the first time as I need to download the model)")
         self.model = MBartForConditionalGeneration.from_pretrained(model_name)
         print("Loading tokenizer")
         self.tokenizer = MBart50TokenizerFast.from_pretrained(model_name, src_lang=src_lang, tgt_lang=tgt_lang)
@@ -253,10 +253,16 @@ class Script(scripts.Script):
         pattern = r"\)\s*\+\+|\)\+\+\s*"
         replacement = r")++"
         return re.sub(pattern, replacement, text)
+    
+    def remove_extra_plus(self, text):
+        pattern = r"\)\+{2,}"
+        replacement = r")++"
+        return re.sub(pattern, replacement, text)    
 
     def post_process_prompt(self, prompt):
         # Example usage:
         clean_prompt = self.remove_unnecessary_spaces(prompt)
+        clean_prompt = self.remove_extra_plus(clean_prompt)
         return clean_prompt  
 
 
