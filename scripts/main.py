@@ -9,6 +9,9 @@ from modules.shared import opts
 
 from transformers import MBart50TokenizerFast, MBartForConditionalGeneration
 
+import re
+
+
 
 class MBartTranslator:
     """MBartTranslator class provides a simple interface for translating text using the MBart language model.
@@ -93,11 +96,11 @@ class MBartTranslator:
             "zh_TW",
         ]
         print("Building translator")
-        print("Loading generator")
+        print("Loading generator (this may take few minutes the first time as I need to sownload the model)")
         self.model = MBartForConditionalGeneration.from_pretrained(model_name)
         print("Loading tokenizer")
         self.tokenizer = MBart50TokenizerFast.from_pretrained(model_name, src_lang=src_lang, tgt_lang=tgt_lang)
-        print("Translator ready")
+        print("Translator is ready")
 
     def translate(self, text: str, input_language: str, output_language: str) -> str:
         """Translate the given text from the input language to the output language.
@@ -245,6 +248,18 @@ class Script(scripts.Script):
 
         return original_prompts, original_negative_prompts
     
+
+    def remove_unnecessary_spaces(self, text):
+        pattern = r"\)\s*\+\+|\)\+\+\s*"
+        replacement = r")++"
+        return re.sub(pattern, replacement, text)
+
+    def post_process_prompt(self, prompt):
+        # Example usage:
+        clean_prompt = self.remove_unnecessary_spaces(prompt)
+        return clean_prompt  
+
+
     def process(self, p, language, **kwargs):
         if hasattr(self, "translator") and self.is_active:
             original_prompts, original_negative_prompts = self.get_prompts(p)
@@ -254,6 +269,7 @@ class Script(scripts.Script):
                 print(f"Initial prompt:{original_prompt}")
                 ln_code = language_options[language].language_code
                 translated_prompt = self.translator.translate(original_prompt, ln_code, "en_XX")
+                translated_prompt = self.post_process_prompt(translated_prompt)
                 print(f"Translated prompt:{translated_prompt}")
                 translated_prompts.append(translated_prompt)
 
@@ -265,6 +281,7 @@ class Script(scripts.Script):
                     print(f"Initial negative prompt:{negative_prompt}")
                     ln_code = language_options[language].language_code
                     translated_negative_prompt = self.translator.translate(negative_prompt, ln_code, "en_XX")
+                    translated_negative_prompt = self.post_process_prompt(translated_negative_prompt)
                     print(f"Translated negative prompt:{translated_negative_prompt}")
                     translated_negative_prompts.append(translated_negative_prompt)
 
