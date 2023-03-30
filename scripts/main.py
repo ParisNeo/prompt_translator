@@ -129,90 +129,236 @@ class MBartTranslator:
 
 
 
-class AxisOption:
+class LanguageOption:
+    """
+    A class representing a language option in a language selector.
+
+    Attributes:
+        label (str): The display label for the language option.
+        language_code (str): The ISO 639-1 language code for the language option.
+    """
+
     def __init__(self, label, language_code):
+        """
+        Initializes a new LanguageOption instance.
+
+        Args:
+            label (str): The display label for the language option.
+            language_code (str): The ISO 639-1 language code for the language option.
+        """
         self.label = label
         self.language_code = language_code
 
 
 
+# This is a list of LanguageOption objects that represent the various language options available.
+# Each LanguageOption object contains a label that represents the display name of the language and 
+# a language code that represents the code for the language that will be used by the translation model.
+# The language codes follow a format of "xx_YY" where "xx" represents the language code and "YY" represents the 
+# country or region code. If the language code is not specific to a country or region, then "XX" is used instead.
+# For example, "en_XX" represents English language and "fr_FR" represents French language specific to France.
+# These LanguageOption objects will be used to display the language options to the user and to retrieve the 
+# corresponding language code when the user selects a language.
 language_options = [    
-    AxisOption("English", "en_XX"),
-    AxisOption("عربية", "ar_AR"),
-    AxisOption("Deutsch", "de_DE"),
-    AxisOption("Español", "es_XX"),
-    AxisOption("Français", "fr_XX"),
-    AxisOption("हिन्दी", "hi_IN"),
-    AxisOption("Italiano", "it_IT"),
-    AxisOption("日本語", "ja_XX"),
-    AxisOption("한국어", "ko_XX"),
-    AxisOption("Português", "pt_XX"),
-    AxisOption("Русский", "ru_XX"),
-    AxisOption("中文", "zh_XX"),
-    AxisOption("Afrikaans", "af_ZA"),
-    AxisOption("বাংলা", "bn_BD"),
-    AxisOption("Bosanski", "bs_XX"),
-    AxisOption("Català", "ca_XX"),
-    AxisOption("Čeština", "cs_CZ"),
-    AxisOption("Dansk", "da_XX"),
-    AxisOption("Ελληνικά", "el_GR"),
-    AxisOption("Eesti", "et_EE"),
-    AxisOption("فارسی", "fa_IR"),
-    AxisOption("Suomi", "fi_FI"),
-    AxisOption("ગુજરાતી", "gu_IN"),
-    AxisOption("עברית", "he_IL"),
-    AxisOption("हिन्दी", "hi_XX"),
-    AxisOption("Hrvatski", "hr_HR"),
-    AxisOption("Magyar", "hu_HU"),
-    AxisOption("Bahasa Indonesia", "id_ID"),
-    AxisOption("Íslenska", "is_IS"),
-    AxisOption("日本語", "ja_XX"),
-    AxisOption("Javanese", "jv_XX"),
-    AxisOption("ქართული", "ka_GE"),
-    AxisOption("Қазақ", "kk_XX"),
-    AxisOption("ខ្មែរ", "km_KH"),
-    AxisOption("ಕನ್ನಡ", "kn_IN"),
-    AxisOption("한국어", "ko_KR"),
-    AxisOption("ລາວ", "lo_LA"),
-    AxisOption("Lietuvių", "lt_LT"),
-    AxisOption("Latviešu", "lv_LV"),
-    AxisOption("Македонски", "mk_MK"),
-    AxisOption("മലയാളം", "ml_IN"),
-    AxisOption("मराठी", "mr_IN"),
-    AxisOption("Bahasa Melayu", "ms_MY"),
-    AxisOption("नेपाली", "ne_NP"),
-    AxisOption("Nederlands", "nl_XX"),
-    AxisOption("Norsk", "no_XX"),
-    AxisOption("Polski", "pl_XX"),
-    AxisOption("Română", "ro_RO"),
-    AxisOption("සිංහල", "si_LK"),
-    AxisOption("Slovenčina", "sk_SK"),
-    AxisOption("Slovenščina", "sl_SI"),
-    AxisOption("Shqip", "sq_AL"),   
-    AxisOption("Turkish", "tr_TR")
+    LanguageOption("English", "en_XX"),
+    LanguageOption("عربية", "ar_AR"),
+    LanguageOption("Deutsch", "de_DE"),
+    LanguageOption("Español", "es_XX"),
+    LanguageOption("Français", "fr_XX"),
+    LanguageOption("हिन्दी", "hi_IN"),
+    LanguageOption("Italiano", "it_IT"),
+    LanguageOption("日本語", "ja_XX"),
+    LanguageOption("한국어", "ko_XX"),
+    LanguageOption("Português", "pt_XX"),
+    LanguageOption("Русский", "ru_XX"),
+    LanguageOption("中文", "zh_XX"),
+    LanguageOption("Afrikaans", "af_ZA"),
+    LanguageOption("বাংলা", "bn_BD"),
+    LanguageOption("Bosanski", "bs_XX"),
+    LanguageOption("Català", "ca_XX"),
+    LanguageOption("Čeština", "cs_CZ"),
+    LanguageOption("Dansk", "da_XX"),
+    LanguageOption("Ελληνικά", "el_GR"),
+    LanguageOption("Eesti", "et_EE"),
+    LanguageOption("فارسی", "fa_IR"),
+    LanguageOption("Suomi", "fi_FI"),
+    LanguageOption("ગુજરાતી", "gu_IN"),
+    LanguageOption("עברית", "he_IL"),
+    LanguageOption("हिन्दी", "hi_XX"),
+    LanguageOption("Hrvatski", "hr_HR"),
+    LanguageOption("Magyar", "hu_HU"),
+    LanguageOption("Bahasa Indonesia", "id_ID"),
+    LanguageOption("Íslenska", "is_IS"),
+    LanguageOption("日本語", "ja_XX"),
+    LanguageOption("Javanese", "jv_XX"),
+    LanguageOption("ქართული", "ka_GE"),
+    LanguageOption("Қазақ", "kk_XX"),
+    LanguageOption("ខ្មែរ", "km_KH"),
+    LanguageOption("ಕನ್ನಡ", "kn_IN"),
+    LanguageOption("한국어", "ko_KR"),
+    LanguageOption("ລາວ", "lo_LA"),
+    LanguageOption("Lietuvių", "lt_LT"),
+    LanguageOption("Latviešu", "lv_LV"),
+    LanguageOption("Македонски", "mk_MK"),
+    LanguageOption("മലയാളം", "ml_IN"),
+    LanguageOption("मराठी", "mr_IN"),
+    LanguageOption("Bahasa Melayu", "ms_MY"),
+    LanguageOption("नेपाली", "ne_NP"),
+    LanguageOption("Nederlands", "nl_XX"),
+    LanguageOption("Norsk", "no_XX"),
+    LanguageOption("Polski", "pl_XX"),
+    LanguageOption("Română", "ro_RO"),
+    LanguageOption("සිංහල", "si_LK"),
+    LanguageOption("Slovenčina", "sk_SK"),
+    LanguageOption("Slovenščina", "sl_SI"),
+    LanguageOption("Shqip", "sq_AL"),   
+    LanguageOption("Turkish", "tr_TR")
 ]
 
+def remove_unnecessary_spaces(text):
+    """Removes unnecessary spaces between characters."""
+    pattern = r"\)\s*\+\+|\)\+\+\s*"
+    replacement = r")++"
+    return re.sub(pattern, replacement, text)
+
+def correct_translation_format(original_text, translated_text):
+    original_parts = original_text.split('++')
+    translated_parts = translated_text.split('++')
+    
+    corrected_parts = []
+    for i, original_part in enumerate(original_parts):
+        translated_part = translated_parts[i]
+        
+        original_plus_count = original_part.count('+')
+        translated_plus_count = translated_part.count('+')
+        plus_difference = translated_plus_count - original_plus_count
+        
+        if plus_difference > 0:
+            translated_part = translated_part.replace('+' * plus_difference, '', 1)
+        elif plus_difference < 0:
+            translated_part += '+' * abs(plus_difference)
+        
+        corrected_parts.append(translated_part)
+    
+    corrected_text = '++'.join(corrected_parts)
+    return corrected_text
+
+def extract_plus_positions(text):
+    """
+    Given a string of text, extracts the positions of all sequences of one or more '+' characters.
+    
+    Args:
+    - text (str): the input text
+    
+    Returns:
+    - positions (list of lists): a list of [start, end, count] for each match, where start is the index of the
+      first '+' character, end is the index of the last '+' character + 1, and count is the number of '+' characters
+      in the match.
+    """
+    # Match any sequence of one or more '+' characters
+    pattern = re.compile(r'\++')
+
+    # Find all matches of the pattern in the text
+    matches = pattern.finditer(text)
+
+    # Loop through the matches and add their positions to the output list
+    positions = []
+    last_match_end = None
+    for match in matches:
+        if last_match_end is not None and match.start() != last_match_end:
+            # If there is a gap between the current match and the previous one, add a new position
+            j = last_match_end - 1
+            while text[j] == "+":
+                j -= 1
+            j += 1
+            positions.append([j, last_match_end, last_match_end - j])
+
+        last_match_end = match.end()
+    
+    # If the final match extends to the end of the string, add its position to the output list
+    if last_match_end is not None and last_match_end == len(text):
+        j = last_match_end - 1
+        while text[j] == "+":
+            j -= 1
+        j += 1
+        positions.append([j, last_match_end, last_match_end - j])
+
+    return positions
+
+
+def match_pluses(original_text, translated_text):
+    """
+    Given two strings of text, replaces sequences of '+' characters in the second string with the corresponding
+    sequences of '+' characters in the first string.
+    
+    Args:
+    - original_text (str): the original text
+    - translated_text (str): the translated text with '+' characters
+    
+    Returns:
+    - output (str): the translated text with '+' characters replaced by those in the original text
+    """
+    in_positions = extract_plus_positions(original_text)
+    out_positions = extract_plus_positions(translated_text)    
+    
+    # Print the positions for debugging
+    print(in_positions)
+    print(out_positions)
+    
+    in_vals = []
+    out_vals = []
+    out_current_pos = 0
+    
+    if len(in_positions) == len(out_positions):
+        # Iterate through the positions and replace the sequences of '+' characters in the translated text
+        # with those in the original text
+        for in_, out_ in zip(in_positions, out_positions):
+            out_vals.append(translated_text[out_current_pos:out_[0]])
+            out_vals.append(original_text[in_[0]:in_[1]])
+            out_current_pos = out_[1]
+            
+            # Check that the number of '+' characters in the original and translated sequences is the same
+            if in_[2] != out_[2]:
+                print("detected different + count")
+
+    # Add any remaining text from the translated string to the output
+    out_vals.append(translated_text[out_current_pos:])
+    
+    # Join the output values into a single string
+    output = "".join(out_vals)
+    return output
+
+def post_process_prompt(original, translated):
+    """Applies post-processing to the translated prompt such as removing unnecessary spaces and extra plus signs."""
+    clean_prompt = remove_unnecessary_spaces(translated)
+    clean_prompt = match_pluses(original, clean_prompt)
+    #clean_prompt = remove_extra_plus(clean_prompt)
+    return clean_prompt  
 
 class Script(scripts.Script):
     def __init__(self) -> None:
+        """Initializes the Script class and sets the default value for enable_translation attribute."""
         super().__init__()
         self.enable_translation=False
 
     def title(self):
+        """Returns the title of the script."""
         return "Translate prompt to english"
 
     def show(self, is_img2img):
+        """Returns the visibility status of the script in the interface."""
         return scripts.AlwaysVisible
     
     def set_active(self, active):
+        """Sets the is_active attribute and initializes the translator object if not already created. 
+        Also, sets the visibility of the language dropdown to True."""
         self.is_active=active
         if not hasattr(self, "translator"):
             self.translator = MBartTranslator()
-        return self.language.update(visible=True)
-
-
+        return "ready"
 
     def ui(self, is_img2img):
+        """Sets up the user interface of the script."""
         self.is_active=False
         self.current_axis_options = [x for x in language_options]
 
@@ -224,21 +370,28 @@ class Script(scripts.Script):
                         # Description
                         This script translates your prompt from another language to english before generating the image allowing you to write prompts in your native language.
                         # How to use
-                        Select Enable translation and wait until you the list of languages show up.
-                        Once the languages are shown, select the prompt language, write the prompt in the prompt field then press generate. The script will translate the prompt and generate the text.
+                        Select Enable translation and wait until you the label shows ready.
+                        Once the label has Ready on it, select the prompt language, write the prompt in the prompt field then press generate. The script will translate the prompt and generate the text.
                         # Note
                         First time you enable the script, it may take a long time (around a minute), but once loaded, it will be faster.
                         """)
                     with gr.Column():
                         self.enable_translation = gr.Checkbox(label="Enable translation")
                         self.enable_translation.value=False
-                        self.language = gr.Dropdown(label="Source language", choices=[x.label for x in self.current_axis_options], value=self.current_axis_options[1].label, type="index", elem_id=self.elem_id("x_type"))
-                        self.enable_translation.change(self.set_active,[self.enable_translation],[self.language])
+                        self.language = gr.Dropdown(
+                                            label="Source language", 
+                                            choices=[x.label for x in self.current_axis_options], 
+                                            value="", 
+                                            type="index", 
+                                            elem_id=self.elem_id("x_type")
+                                        )
+                        self.output=gr.Label("After enabling translation, please Wait until I am ready")
+                        self.enable_translation.change(self.set_active,[self.enable_translation], [self.output], show_progress=True)
 
-        self.language.visible=False
         return [self.language]
 
     def get_prompts(self, p):
+        """Returns the original prompts and negative prompts associated with a Prompt object."""
         original_prompts = p.all_prompts if len(p.all_prompts) > 0 else [p.prompt]
         original_negative_prompts = (
             p.all_negative_prompts
@@ -248,25 +401,8 @@ class Script(scripts.Script):
 
         return original_prompts, original_negative_prompts
     
-
-    def remove_unnecessary_spaces(self, text):
-        pattern = r"\)\s*\+\+|\)\+\+\s*"
-        replacement = r")++"
-        return re.sub(pattern, replacement, text)
-    
-    def remove_extra_plus(self, text):
-        pattern = r"\)\+{2,}"
-        replacement = r")++"
-        return re.sub(pattern, replacement, text)    
-
-    def post_process_prompt(self, prompt):
-        # Example usage:
-        clean_prompt = self.remove_unnecessary_spaces(prompt)
-        clean_prompt = self.remove_extra_plus(clean_prompt)
-        return clean_prompt  
-
-
     def process(self, p, language, **kwargs):
+        """Translates the prompts from a non-English language to English using the MBartTranslator object."""
         if hasattr(self, "translator") and self.is_active:
             original_prompts, original_negative_prompts = self.get_prompts(p)
             translated_prompts=[]
@@ -275,7 +411,7 @@ class Script(scripts.Script):
                 print(f"Initial prompt:{original_prompt}")
                 ln_code = language_options[language].language_code
                 translated_prompt = self.translator.translate(original_prompt, ln_code, "en_XX")
-                translated_prompt = self.post_process_prompt(translated_prompt)
+                translated_prompt = post_process_prompt(original_prompt, translated_prompt)
                 print(f"Translated prompt:{translated_prompt}")
                 translated_prompts.append(translated_prompt)
 
@@ -287,7 +423,7 @@ class Script(scripts.Script):
                     print(f"Initial negative prompt:{negative_prompt}")
                     ln_code = language_options[language].language_code
                     translated_negative_prompt = self.translator.translate(negative_prompt, ln_code, "en_XX")
-                    translated_negative_prompt = self.post_process_prompt(translated_negative_prompt)
+                    translated_negative_prompt = post_process_prompt(negative_prompt,translated_negative_prompt)
                     print(f"Translated negative prompt:{translated_negative_prompt}")
                     translated_negative_prompts.append(translated_negative_prompt)
 
@@ -297,6 +433,4 @@ class Script(scripts.Script):
             p.prompt_for_display = translated_prompts[0]
             p.all_prompts=translated_prompts
 
-    def postprocess(self, p, processed, *args):
-        print(f"Post process: Translated prompt : {p.prompt}")
         
