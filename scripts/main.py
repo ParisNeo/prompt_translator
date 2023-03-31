@@ -159,8 +159,7 @@ class LanguageOption:
 # For example, "en_XX" represents English language and "fr_FR" represents French language specific to France.
 # These LanguageOption objects will be used to display the language options to the user and to retrieve the 
 # corresponding language code when the user selects a language.
-language_options = [    
-    LanguageOption("English", "en_XX"),
+language_options = [
     LanguageOption("عربية", "ar_AR"),
     LanguageOption("Deutsch", "de_DE"),
     LanguageOption("Español", "es_XX"),
@@ -377,6 +376,7 @@ class Script(scripts.Script):
                         """)
                     with gr.Column():
                         self.enable_translation = gr.Checkbox(label="Enable translation")
+                        self.translate_negative_prompt = gr.Checkbox(label="Translate negative prompt")
                         self.enable_translation.value=False
                         self.language = gr.Dropdown(
                                             label="Source language", 
@@ -415,8 +415,7 @@ class Script(scripts.Script):
                 print(f"Translated prompt:{translated_prompt}")
                 translated_prompts.append(translated_prompt)
 
-            if p.negative_prompt!='':
-
+            if p.negative_prompt!='' and self.translate_negative_prompt.value:
                 translated_negative_prompts=[]
                 for negative_prompt in original_negative_prompts:
                     print(f"Translating negative prompt to English from {language_options[language].label}")
