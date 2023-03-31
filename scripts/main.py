@@ -355,7 +355,7 @@ class Script(scripts.Script):
         self.is_active=active
         if not hasattr(self, "translator"):
             self.translator = MBartTranslator()
-        return "ready", self.translate_negative_prompt.update(visible=True), self.language.update(visible=True)
+        return "ready", self.options.update(visible=True)
 
 
     def ui(self, is_img2img):
@@ -378,24 +378,25 @@ class Script(scripts.Script):
                         """)
                     with gr.Column():
                         self.enable_translation = gr.Checkbox(label="Enable translation")
-                        self.translate_negative_prompt = gr.Checkbox(label="Translate negative prompt")
-                        self.enable_translation.value=False
-                        self.language = gr.Dropdown(
-                                            label="Source language", 
-                                            choices=[x.label for x in self.current_axis_options], 
-                                            value="", 
-                                            type="index", 
-                                            elem_id=self.elem_id("x_type")
-                                        )
+                        with gr.Column() as options:
+                            self.options=options
+                            self.translate_negative_prompt = gr.Checkbox(label="Translate negative prompt")
+                            self.enable_translation.value=False
+                            self.language = gr.Dropdown(
+                                                label="Source language", 
+                                                choices=[x.label for x in self.current_axis_options], 
+                                                value="", 
+                                                type="index", 
+                                                elem_id=self.elem_id("x_type")
+                                            )
                         self.output=gr.Label("After enabling translation, please Wait until I am ready")
                         self.enable_translation.change(
                             self.set_active,
                             [self.enable_translation], 
-                            [self.translate_negative_prompt, self.language,self.output], 
+                            [self.output, self.options], 
                             show_progress=True
                         )
-        self.translate_negative_prompt.visible=False
-        self.language.visible=False
+        self.options.visible=False
         return [self.language]
 
     def get_prompts(self, p):
