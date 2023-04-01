@@ -385,7 +385,7 @@ class Script(scripts.Script):
                             self.language = gr.Dropdown(
                                                 label="Source language", 
                                                 choices=[x.label for x in self.current_axis_options], 
-                                                value="", 
+                                                value="Français", 
                                                 type="index", 
                                                 elem_id=self.elem_id("x_type")
                                             )
