@@ -301,11 +301,6 @@ def match_pluses(original_text, translated_text):
     in_positions = extract_plus_positions(original_text)
     out_positions = extract_plus_positions(translated_text)    
     
-    # Print the positions for debugging
-    print(in_positions)
-    print(out_positions)
-    
-    in_vals = []
     out_vals = []
     out_current_pos = 0
     
@@ -412,33 +407,51 @@ class Script(scripts.Script):
     
     def process(self, p, language, **kwargs):
         """Translates the prompts from a non-English language to English using the MBartTranslator object."""
+
         if hasattr(self, "translator") and self.is_active:
             original_prompts, original_negative_prompts = self.get_prompts(p)
             translated_prompts=[]
+            previous_prompt = ""
+            previous_translated_prompt = ""
+
             for original_prompt in original_prompts:
-                print(f"Translating prompt to English from {language_options[language].label}")
-                print(f"Initial prompt:{original_prompt}")
-                ln_code = language_options[language].language_code
-                translated_prompt = self.translator.translate(original_prompt, ln_code, "en_XX")
-                translated_prompt = post_process_prompt(original_prompt, translated_prompt)
-                print(f"Translated prompt:{translated_prompt}")
-                translated_prompts.append(translated_prompt)
+                if previous_prompt != original_prompt:
+                    print(f"Translating prompt to English from {language_options[language].label}")
+                    print(f"Initial prompt:{original_prompt}")
+                    ln_code = language_options[language].language_code
+                    translated_prompt = self.translator.translate(original_prompt, ln_code, "en_XX")
+                    translated_prompt = post_process_prompt(original_prompt, translated_prompt)
+                    print(f"Translated prompt:{translated_prompt}")
+                    translated_prompts.append(translated_prompt)
+
+                    previous_prompt=original_prompt
+                    previous_translated_prompt = translated_prompt
+                else:
+                    translated_prompts.append(previous_translated_prompt)
+
 
             if p.negative_prompt!='' and self.translate_negative_prompt.value:
+                previous_negative_prompt = ""
+                previous_translated_negative_prompt = ""
                 translated_negative_prompts=[]
                 for negative_prompt in original_negative_prompts:
-                    print(f"Translating negative prompt to English from {language_options[language].label}")
-                    print(f"Initial negative prompt:{negative_prompt}")
-                    ln_code = language_options[language].language_code
-                    translated_negative_prompt = self.translator.translate(negative_prompt, ln_code, "en_XX")
-                    translated_negative_prompt = post_process_prompt(negative_prompt,translated_negative_prompt)
-                    print(f"Translated negative prompt:{translated_negative_prompt}")
-                    translated_negative_prompts.append(translated_negative_prompt)
+                    if previous_negative_prompt!=negative_prompt:
+                        print(f"Translating negative prompt to English from {language_options[language].label}")
+                        print(f"Initial negative prompt:{negative_prompt}")
+                        ln_code = language_options[language].language_code
+                        translated_negative_prompt = self.translator.translate(negative_prompt, ln_code, "en_XX")
+                        translated_negative_prompt = post_process_prompt(negative_prompt,translated_negative_prompt)
+                        print(f"Translated negative prompt:{translated_negative_prompt}")
+                        translated_negative_prompts.append(translated_negative_prompt)
+
+
+                        previous_negative_prompt = negative_prompt
+                        previous_translated_negative_prompt = translated_negative_prompt
+                    else:
+                        translated_negative_prompts.append(previous_translated_negative_prompt)
 
                 p.negative_prompt = translated_negative_prompts[0]
                 p.all_negative_prompts = translated_negative_prompts
             p.prompt = translated_prompts[0]
             p.prompt_for_display = translated_prompts[0]
             p.all_prompts=translated_prompts
-
-        
