@@ -10,8 +10,14 @@ After installing `prompt_translator`, a new entry will be added to the Gradio UI
 
 The user can then write their prompt in the desired language and press the "Generate" button to generate the image. The prompt will automatically be translated to English, and the resulting image will look as described in the text.
 
+Here are some screenshots of the extension in work:
+
 ![image](https://user-images.githubusercontent.com/827993/228090321-2554472d-6fd0-4449-a6d4-190a62ddcce9.png)
 ![image](https://user-images.githubusercontent.com/827993/228090380-9f2f8928-4698-403e-8ed5-94043ed25480.png)
+
+
+Using the X/Y/Z script, we can test changing words in another language. Here is French
+![image](https://user-images.githubusercontent.com/827993/229276434-6e024886-13d8-4aa5-b143-6622e544f192.png)
 
 
 ## License
