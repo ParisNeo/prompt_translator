@@ -171,7 +171,7 @@ language_options = [
     LanguageOption("한국어", "ko_XX"),
     LanguageOption("Português", "pt_XX"),
     LanguageOption("Русский", "ru_XX"),
-    LanguageOption("中文", "zh_XX"),
+    LanguageOption("中文", "zh_CN"),
     LanguageOption("Afrikaans", "af_ZA"),
     LanguageOption("বাংলা", "bn_BD"),
     LanguageOption("Bosanski", "bs_XX"),
