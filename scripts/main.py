@@ -213,6 +213,7 @@ language_options = [
     LanguageOption("Slovenščina", "sl_SI"),
     LanguageOption("Shqip", "sq_AL"),   
     LanguageOption("Turkish", "tr_TR")
+    LanguageOption("Tiếng Việt", "vi_VN")
 ]
 
 def remove_unnecessary_spaces(text):
