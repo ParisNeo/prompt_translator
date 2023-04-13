@@ -336,6 +336,7 @@ class Script(scripts.Script):
         """Initializes the Script class and sets the default value for enable_translation attribute."""
         super().__init__()
         self.enable_translation=False
+        self.is_negative_translate_active=False
 
     def title(self):
         """Returns the title of the script."""
@@ -352,6 +353,12 @@ class Script(scripts.Script):
         if not hasattr(self, "translator"):
             self.translator = MBartTranslator()
         return "ready", self.options.update(visible=True)
+
+    def set_negative_translate_active(self, negative_translate_active):
+        """Sets the is_active attribute and initializes the translator object if not already created. 
+        Also, sets the visibility of the language dropdown to True."""
+        self.is_negative_translate_active=negative_translate_active
+        
 
 
     def ui(self, is_img2img):
@@ -392,6 +399,11 @@ class Script(scripts.Script):
                             [self.output, self.options], 
                             show_progress=True
                         )
+                        self.translate_negative_prompt.change(
+                            self.set_negative_translate_active
+                            [self.translate_negative_prompt], 
+                        )
+
         self.options.visible=False
         return [self.language]
 
@@ -431,7 +443,7 @@ class Script(scripts.Script):
                     translated_prompts.append(previous_translated_prompt)
 
 
-            if p.negative_prompt!='' and self.translate_negative_prompt.value:
+            if p.negative_prompt!='' and self.is_negative_translate_active:
                 previous_negative_prompt = ""
                 previous_translated_negative_prompt = ""
                 translated_negative_prompts=[]
