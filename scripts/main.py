@@ -400,7 +400,7 @@ class Script(scripts.Script):
                             show_progress=True
                         )
                         self.translate_negative_prompt.change(
-                            self.set_negative_translate_active
+                            self.set_negative_translate_active,
                             [self.translate_negative_prompt], 
                         )
 
