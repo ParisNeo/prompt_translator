@@ -1,6 +1,20 @@
 # Prompt Translator for Stable Diffusion
+[![Follow me on Twitter](https://img.shields.io/twitter/follow/SpaceNerduino?style=social)](https://twitter.com/SpaceNerduino)
+[![Follow Me on YouTube](https://img.shields.io/badge/Follow%20Me%20on-YouTube-red?style=flat&logo=youtube)](https://www.youtube.com/user/Parisneo)
 
 Stable diffusion is a text to image generation model. The `prompt_translator` extension allows people to translate their prompt from any language to English before executing the generation, making it accessible to a wider audience.
+
+## Utility
+
+Here is an example of how useful prompt_translator can be:
+
+Let's say that you are a French speaker and want to use Stable Diffusion to generate an image of a beautiful mountain. However, the model requires the prompt to be in English. Without prompt_translator, you would need to either write your prompt in English (if you're comfortable with the language) or use an external translation tool to manually translate your prompt to English.
+
+With prompt_translator, you can simply select "French" as your source language and write your prompt in French. The extension will automatically translate your prompt to English before sending it to the model. This way, you can use Stable Diffusion without having to worry about the language barrier.
+
+Using prompt_translator makes Stable Diffusion more accessible to people who are not comfortable with English or have limited proficiency in the language. It opens up new possibilities for text-to-image generation by allowing users to use their native language to write prompts.
+
+We hope that prompt_translator will make Stable Diffusion more accessible and easier to use for people around the world. Please feel free to contribute to the project or report any issues on our GitHub page.
 
 ## Installation
 
