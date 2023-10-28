@@ -353,13 +353,15 @@ class Script(scripts.Script):
         self.is_active=active
         if not hasattr(self, "translator"):
             self.translator = MBartTranslator()
-        return "ready", self.options.update(visible=True)
+        if self.is_active:
+            return "# I am ready", self.options.update(visible=True)
+        else:
+            return "After enabling translation, please Wait until I am ready", self.options.update(visible=False)
 
     def set_negative_translate_active(self, negative_translate_active):
         """Sets the is_active attribute and initializes the translator object if not already created. 
         Also, sets the visibility of the language dropdown to True."""
         self.is_negative_translate_active=negative_translate_active
-        
 
 
     def ui(self, is_img2img):
@@ -393,7 +395,7 @@ class Script(scripts.Script):
                                                 type="index", 
                                                 elem_id=self.elem_id("x_type")
                                             )
-                        self.output=gr.Label("After enabling translation, please Wait until I am ready")
+                        self.output=gr.Markdown(value="After enabling translation, please Wait until I am ready", visible=True)
                         self.enable_translation.change(
                             self.set_active,
                             [self.enable_translation], 
